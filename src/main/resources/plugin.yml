@@ -1,0 +1,7 @@
+name: ChallengeBattle
+version: '${project.version}'
+main: it.marcomaraglino.challengebattle.ChallengeBattle
+api-version: '1.20'
+commands:
+  arena:
+    description: The command that allows a player to join or leave an arena as well as checking the id of an arena.
