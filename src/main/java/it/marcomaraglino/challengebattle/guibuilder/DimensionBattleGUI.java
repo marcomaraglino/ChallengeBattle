@@ -75,7 +75,7 @@ public class DimensionBattleGUI extends Gui {
 
         int i = 0;
         for (DimensionBattleStructure dimension : dimensions) {
-            this.pagination.addItem(new Icon(dimension.getIcon()).setName(dimension.getName()).onClick(e -> {
+            this.pagination.addItem(new Icon(dimension.getIcon()).setName(configfile.getElementcolor() + dimension.getName().replaceAll("_", " ")).onClick(e -> {
                 if (current != null) {
                     player.sendMessage(configfile.getAlreadyInArena());
                     return;

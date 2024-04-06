@@ -8,6 +8,7 @@ import mc.obliviate.inventory.Icon;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.generator.structure.Structure;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -67,7 +68,11 @@ public class ChallengeRoomGui extends Gui {
                     icon.appendLore(configfile.getRoomguiarenamode().replaceAll("%s", configfile.getDimensionbattle()));
                     break;
             }
-            icon.appendLore(configfile.getRoomguiarenaobject().replaceAll("%s", arenas.get(i).getStructure().getName()));
+            if (arenas.get(i).getObject() instanceof Structure structure) {
+                icon.appendLore(configfile.getRoomguiarenaobject().replaceAll("%s", structure.getKey().asString().replaceAll("minecraft:", "")));
+            } else {
+                icon.appendLore(configfile.getRoomguiarenaobject().replaceAll("%s", arenas.get(i).getObject().toString()));
+            }
             icon.setAmount(arenas.get(i).getPlayers().size());
 
 

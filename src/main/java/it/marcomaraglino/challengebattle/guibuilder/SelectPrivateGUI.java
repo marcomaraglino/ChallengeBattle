@@ -32,10 +32,7 @@ public class SelectPrivateGUI extends Gui {
             arena.setPrivateArena(true);
             arena.addArena();
             player.performCommand("arena join " + arena.getId());
-
-
             player.sendMessage(configfile.getArenaCreated());
-
             player.closeInventory();
         }));
 

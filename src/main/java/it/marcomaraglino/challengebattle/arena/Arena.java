@@ -27,15 +27,14 @@ public class Arena<T> {
     private final Game game;
 
     private final int requiredPlayers;
+    private final T object;
     private final String prefix;
     private boolean privateArena;
-    private GameConfigStructure<T> structure;
-
-    public Arena(GameType gameType, GameConfigStructure<T> structure) {
+    public Arena(GameType gameType, T object) {
         Configfile configfile = new Configfile();
 
         privateArena = true;
-        this.structure = structure;
+        this.object = object;
 
         int arena_id = 1;
 
@@ -69,18 +68,15 @@ public class Arena<T> {
                 z);
 
         this.countdown = new Countdown(this);
-        this.game = new Game(this, gameType, structure.getItem(), structure.getName());
+        this.game = new Game(this, gameType, object);
 
         // The players required for the countdown to start.
         this.requiredPlayers = configfile.getRequiredplayers();
         this.prefix = configfile.getArenaprefix().replaceAll("%s", String.valueOf(id));
 
-        // Add the arena to the arena list in the manager class.
-        if (Manager.getInstance().getArenaList().size() >= configfile.getMaxnumberarenas()) {
-            return;
-        }
     }
 
+    // Add the arena to the arena list in the manager class.
     public void addArena() {
         Manager.getInstance().addArena(this);
     }
@@ -233,7 +229,7 @@ public class Arena<T> {
         }
     }
 
-    public GameConfigStructure<T> getStructure() {
-        return structure;
+    public T getObject() {
+        return object;
     }
 }

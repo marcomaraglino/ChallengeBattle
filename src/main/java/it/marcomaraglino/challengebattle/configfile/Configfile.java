@@ -6,8 +6,10 @@ import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
+import org.bukkit.generator.structure.Structure;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Configfile {
@@ -54,20 +56,13 @@ public class Configfile {
     private final String biomefind = config.getString("messages.biomefind");
     private final String time = config.getString("messages.time");
     private final String wonthegame = config.getString("messages.wonthegame");
+    private final String elementcolor = config.getString("guielements.elementcolor");
     private final String random = config.getString("guielements.random");
     private final Sound win_sound = Sound.valueOf(config.getString("win_sound"));
     private final Sound countdown_sound = Sound.valueOf(config.getString("countdown_sound"));
     private final Sound start_sound = Sound.valueOf(config.getString("start_sound"));
     private List<Material> createArenaMaterials = new ArrayList<>();
     private String createarenatitle = config.getString("guititles.createarenatitle");
-
-    /*
-    itemfound: "Item Find Battle"
-biomefound: "Biome Find Battle"
-mobkill: "Mob kill battle"
-structurefound: "Structure Find Battle"
-dimensionbattle: "Dimension Battle"
-     */
     private String itemfound = config.getString("itemfound");
     private String biomefound = config.getString("biomefound");
     private String mobkill = config.getString("mobkill");
@@ -88,12 +83,51 @@ dimensionbattle: "Dimension Battle"
     private String biomefindtitle = config.getString("guititles.biomefindtitle");
     private List<String> createArenaTitles = new ArrayList<>();
     private List<Integer> createArenaSlots = new ArrayList<>();
-    private List<BiomeFindStructure> biomes = new ArrayList<>();
-    private List<ItemFindStructure> items = new ArrayList<>();
-    private List<MobKillStructure> mobs = new ArrayList<>();
+    private List<Biome> biomes = new ArrayList<>();
+    private List<Material> items = new ArrayList<>();
+    private List<EntityType> mobs = new ArrayList<>();
     private List<DimensionBattleStructure> dimensions = new ArrayList<>();
-    private List<StructureFindStructure> structures = new ArrayList<>();
+    private List<Structure> structures = new ArrayList<>();
+    private void addStructures() {
+        structures.add(Structure.ANCIENT_CITY);
+        structures.add(Structure.BASTION_REMNANT);
+        structures.add(Structure.BURIED_TREASURE);
+        structures.add(Structure.DESERT_PYRAMID);
+        structures.add(Structure.END_CITY);
+        structures.add(Structure.FORTRESS);
+        structures.add(Structure.IGLOO);
+        structures.add(Structure.JUNGLE_PYRAMID);
+        structures.add(Structure.MANSION);
+        structures.add(Structure.MINESHAFT);
+        structures.add(Structure.MINESHAFT_MESA);
+        structures.add(Structure.MONUMENT);
+        structures.add(Structure.NETHER_FOSSIL);
+        structures.add(Structure.OCEAN_RUIN_COLD);
+        structures.add(Structure.OCEAN_RUIN_WARM);
+        structures.add(Structure.PILLAGER_OUTPOST);
+        structures.add(Structure.RUINED_PORTAL);
+        structures.add(Structure.RUINED_PORTAL_DESERT);
+        structures.add(Structure.RUINED_PORTAL_JUNGLE);
+        structures.add(Structure.RUINED_PORTAL_MOUNTAIN);
+        structures.add(Structure.RUINED_PORTAL_NETHER);
+        structures.add(Structure.RUINED_PORTAL_OCEAN);
+        structures.add(Structure.RUINED_PORTAL_SWAMP);
+        structures.add(Structure.SHIPWRECK);
+        structures.add(Structure.SHIPWRECK_BEACHED);
+        structures.add(Structure.STRONGHOLD);
+        structures.add(Structure.SWAMP_HUT);
+        structures.add(Structure.TRAIL_RUINS);
+        structures.add(Structure.VILLAGE_DESERT);
+        structures.add(Structure.VILLAGE_PLAINS);
+        structures.add(Structure.VILLAGE_SAVANNA);
+        structures.add(Structure.VILLAGE_SNOWY);
+        structures.add(Structure.VILLAGE_TAIGA);
+    }
+
     public Configfile() {
+
+        addStructures();
+
         ConfigurationSection createArenaSec = config.getConfigurationSection("createArena");
         String createArenaPath = "createArena.";
 
@@ -103,46 +137,57 @@ dimensionbattle: "Dimension Battle"
             createArenaSlots.add(config.getInt(createArenaPath + key + ".slot"));
         }
 
-        ConfigurationSection itemsSec = config.getConfigurationSection("items");
-        String itemsPath = "items.";
 
-        for (String key : itemsSec.getKeys(false)) {
-            ItemFindStructure itemFindStructure = new ItemFindStructure();
+        List<String> removedItemsString = (config.getStringList("items"));
+        List<Material> removedItems = new ArrayList<>();
 
-            itemFindStructure.setName(config.getString(itemsPath + key + ".name"));
-            itemFindStructure.setIcon(Material.valueOf(config.getString(itemsPath + key + ".icon").toUpperCase()));
-            itemFindStructure.setItem(Material.valueOf(config.getString(itemsPath + key + ".item").toUpperCase()));
-
-            items.add(itemFindStructure);
+        for (String item : removedItemsString) {
+            removedItems.add(Material.valueOf(item.toUpperCase()));
         }
 
-        ConfigurationSection biomesSec = config.getConfigurationSection("biomes");
-        String biomesPath = "biomes.";
+        items = new ArrayList<>(Arrays.asList(Material.values()));
 
-        for (String key : biomesSec.getKeys(false)) {
-            BiomeFindStructure biomeFindStructure = new BiomeFindStructure();
-
-            biomeFindStructure.setName(config.getString(biomesPath + key + ".name"));
-            biomeFindStructure.setIcon(Material.valueOf(config.getString(biomesPath + key + ".icon").toUpperCase()));
-            biomeFindStructure.setItem(Biome.valueOf(config.getString(biomesPath + key + ".biome").toUpperCase()));
-
-            biomes.add(biomeFindStructure);
-
+        for (Material item : items) {
+            if (!item.isItem()) {
+                removedItems.add(item);
+            }
         }
 
-        ConfigurationSection mobsSec = config.getConfigurationSection("mobs");
-        String mobsPath = "mobs.";
+        items.removeAll(removedItems);
 
-        for (String key : mobsSec.getKeys(false)) {
-            MobKillStructure mobKillStructure = new MobKillStructure();
+        List<String> removedBiomesString = (config.getStringList("biomes"));
+        List<Biome> removedBiomes = new ArrayList<>();
 
-            mobKillStructure.setName(config.getString(mobsPath + key + ".name"));
-            mobKillStructure.setIcon(Material.valueOf(config.getString(mobsPath + key + ".icon").toUpperCase()));
-            mobKillStructure.setItem(EntityType.valueOf(config.getString(mobsPath + key + ".mob").toUpperCase()));
-
-            mobs.add(mobKillStructure);
-
+        for (String biome : removedBiomesString) {
+            removedBiomes.add(Biome.valueOf(biome.toUpperCase()));
         }
+
+        biomes = new ArrayList<>(Arrays.asList(Biome.values()));
+        biomes.removeAll(removedBiomes);
+
+        List<String> removedMobsString = (config.getStringList("mobs"));
+        List<EntityType> removedMobs = new ArrayList<>();
+
+        for (String mob : removedMobsString) {
+            removedMobs.add(EntityType.valueOf(mob.toUpperCase()));
+        }
+
+        mobs = new ArrayList<>(Arrays.asList(EntityType.values()));
+
+        for (EntityType mob : mobs) {
+            if (!mob.isAlive() || !mob.isSpawnable()) {
+                removedMobs.add(mob);
+            }
+        }
+
+        mobs.removeAll(removedMobs);
+
+        List<Structure> removedStructures = new ArrayList<>();
+        for (String structureString : config.getStringList("structures")) {
+            removedStructures.add(Registry.STRUCTURE.get(NamespacedKey.minecraft(structureString.toLowerCase())));
+        }
+        structures.removeAll(removedStructures);
+
 
         ConfigurationSection dimensionsSec = config.getConfigurationSection("dimensions");
         String dimensionsPath = "dimensions.";
@@ -155,19 +200,6 @@ dimensionbattle: "Dimension Battle"
             dimensionBattleStructure.setItem(World.Environment.valueOf(config.getString(dimensionsPath + key + ".dimension").toUpperCase()));
 
             dimensions.add(dimensionBattleStructure);
-
-        }
-
-        ConfigurationSection structuresSec = config.getConfigurationSection("structures");
-        String structuresPath = "structures.";
-
-        for (String key : structuresSec.getKeys(false)) {
-            StructureFindStructure structureFindStructure = new StructureFindStructure();
-
-            structureFindStructure.setName(config.getString(structuresPath + key + ".name"));
-            structureFindStructure.setIcon(Material.valueOf(config.getString(structuresPath + key + ".icon").toUpperCase()));
-            structureFindStructure.setItem(Registry.STRUCTURE.get(NamespacedKey.minecraft(config.getString(structuresPath + key + ".structure").toLowerCase())));
-            structures.add(structureFindStructure);
 
         }
     }
@@ -262,18 +294,6 @@ dimensionbattle: "Dimension Battle"
         return clickToJoin;
     }
 
-    public List<BiomeFindStructure> getBiomes() {
-        return biomes;
-    }
-
-    public List<ItemFindStructure> getItems() {
-        return items;
-    }
-
-    public List<MobKillStructure> getMobs() {
-        return mobs;
-    }
-
     public List<DimensionBattleStructure> getDimensions() {
         return dimensions;
     }
@@ -362,10 +382,6 @@ dimensionbattle: "Dimension Battle"
         return maxnumberofarenas;
     }
 
-    public List<StructureFindStructure> getStructures() {
-        return structures;
-    }
-
     public String getBiomefindtitle() {
         return biomefindtitle;
     }
@@ -396,6 +412,10 @@ dimensionbattle: "Dimension Battle"
 
     public String getRandom() {
         return random;
+    }
+
+    public String getElementcolor() {
+        return elementcolor;
     }
 
     public Sound getWin_sound() {
@@ -456,5 +476,21 @@ dimensionbattle: "Dimension Battle"
 
     public String getStructurefound() {
         return structurefound;
+    }
+
+    public List<Biome> getBiomes() {
+        return biomes;
+    }
+
+    public List<EntityType> getMobs() {
+        return mobs;
+    }
+
+    public List<Material> getItems() {
+        return items;
+    }
+
+    public List<Structure> getStructures() {
+        return structures;
     }
 }

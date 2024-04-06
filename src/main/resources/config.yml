@@ -38,7 +38,7 @@ messages:
   dimensionbattle: "§aEnter the %s"
   structurefind: "§aFind the %s"
   biomefind: "§aFind the %s"
-  time: "§aTime: %ss"
+  time: "§aTime: %hh %mm %ss"
   wonthegame: "You won the game!"
   maxnumberofarenas: "§cYou have reached the maximum number of arenas"
   gamewillstart: "§aGame will start in %s seconds"
@@ -53,6 +53,7 @@ guititles:
   structurefindtitle: "Structure Find Challenge"
   biomefindtitle: "Biome Find Challenge"
 guielements:
+  elementcolor: "§a"
   back: "Back"
   forward: "Forward"
   private: "Private"
@@ -96,53 +97,18 @@ createArena:
       item: "NETHERITE_INGOT"
       slot: 4
 biomes:
-  DESERT:
-    biome: "DESERT"
-    name: "Desert"
-    icon: "SAND"
-  TAIGA:
-    biome: "TAIGA"
-    name: "Taiga"
-    icon: "SPRUCE_LOG"
-  SAVANNA:
-    biome: "SAVANNA"
-    name: "Savanna"
-    icon: "GRASS_BLOCK"
-
+  - "DESERT"
+  - "TAIGA"
+  - "SAVANNA"
 items:
-  DIRT:
-    item: "DIRT"
-    name: "Dirt"
-    icon: "DIRT"
-  DIAMOND:
-    item: "DIAMOND"
-    name: "Diamond"
-    icon: "DIAMOND"
-  GOLD_INGOT:
-    item: "GOLD_INGOT"
-    name: "Gold Ingot"
-    icon: "GOLD_INGOT"
+  - "DIRT"
+  - "GOLD_INGOT"
 mobs:
-  COW:
-    mob: "COW"
-    name: "Cow"
-    icon: "COW_SPAWN_EGG"
-  PIG:
-    mob: "PIG"
-    name: "Pig"
-    icon: "PIG_SPAWN_EGG"
-  SHEEP:
-    mob: "SHEEP"
-    name: "Sheep"
-    icon: "SHEEP_SPAWN_EGG"
-  CHICKEN:
-    mob: "CHICKEN"
-    name: "Chicken"
-    icon: "CHICKEN_SPAWN_EGG"
-  WOLF:
-    mob: "WOLF"
-    name: "Wolf"
-    icon: "WOLF_SPAWN_EGG"
+  - "COW"
+  - "PIG"
+  - "SHEEP"
+  - "CHICKEN"
+  - "WOLF"
 dimensions:
   NETHER:
     dimension: "NETHER"
@@ -153,18 +119,9 @@ dimensions:
     name: "End"
     icon: "END_STONE"
 structures:
-  VILLAGE:
-    structure: "VILLAGE_DESERT"
-    name: "Village desert"
-    icon: "VILLAGER_SPAWN_EGG"
-  TEMPLE:
-    structure: "PILLAGER_OUTPOST"
-    name: "PILLAGER OUTPOST"
-    icon: "GOLD_BLOCK"
-  MANSION:
-    structure: "MANSION"
-    name: "Mansion"
-    icon: "DARK_OAK_PLANKS"
+  - "VILLAGE_DESERT"
+  - "PILLAGER_OUTPOST"
+  - "MANSION"
 blockedcommands:
   - "/tp"
   - "/spawn"

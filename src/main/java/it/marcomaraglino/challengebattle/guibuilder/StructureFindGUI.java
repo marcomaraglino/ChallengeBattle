@@ -2,7 +2,6 @@ package it.marcomaraglino.challengebattle.guibuilder;
 
 import it.marcomaraglino.challengebattle.arena.Arena;
 import it.marcomaraglino.challengebattle.configfile.Configfile;
-import it.marcomaraglino.challengebattle.configfile.StructureFindStructure;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
 import it.marcomaraglino.challengebattle.manager.Manager;
 import mc.obliviate.inventory.Gui;
@@ -20,7 +19,7 @@ import java.util.Random;
 public class StructureFindGUI extends Gui {
     private final PaginationManager pagination = new PaginationManager(this);
     Configfile configfile = new Configfile();
-    List<StructureFindStructure> structures = configfile.getStructures();
+    List<Structure> structures = configfile.getStructures();
     public StructureFindGUI(@NotNull Player player) {
         super(player, "structurefindgui", "Choose the structure", 6);
         this.setTitle(configfile.getStructurefindtitle());
@@ -37,7 +36,7 @@ public class StructureFindGUI extends Gui {
         randomIcon.onClick(e -> {
             Random random = new Random();
             int index = random.nextInt(structures.size());
-            Structure structure = structures.get(index).getItem();
+            Structure structure = structures.get(index);
 
             if (current != null) {
                 player.sendMessage(configfile.getAlreadyInArena());
@@ -73,9 +72,12 @@ public class StructureFindGUI extends Gui {
             addItem(8, new Icon(Material.AIR));
         }
 
-
-        for (StructureFindStructure structure : configfile.getStructures()) {
-            this.pagination.addItem(new Icon(structure.getIcon()).setName(structure.getName()).onClick(e -> {
+        for (Structure structure : structures) {
+            this.pagination.addItem(new Icon(Material.OAK_SAPLING).setName(configfile.getElementcolor() + structure.getKey().asString()
+                            .replaceAll("minecraft:", "")
+                            .replaceAll("_", " ")
+                            .toUpperCase())
+                    .onClick(e -> {
                 if (current != null) {
                     player.sendMessage(configfile.getAlreadyInArena());
                     return;

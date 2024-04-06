@@ -1,7 +1,6 @@
 package it.marcomaraglino.challengebattle.guibuilder;
 
 import it.marcomaraglino.challengebattle.arena.Arena;
-import it.marcomaraglino.challengebattle.configfile.BiomeFindStructure;
 import it.marcomaraglino.challengebattle.configfile.Configfile;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
 import it.marcomaraglino.challengebattle.manager.Manager;
@@ -22,7 +21,7 @@ public class BiomeFindChallengeGUI extends Gui {
 
     Configfile configfile = new Configfile();
 
-    List<BiomeFindStructure> biomes = configfile.getBiomes();
+    List<Biome> biomes = configfile.getBiomes();
 
     public BiomeFindChallengeGUI(@NotNull Player player) {
         super(player, "biomefindgui", "Select BIOME", 6);
@@ -34,12 +33,13 @@ public class BiomeFindChallengeGUI extends Gui {
     public void onOpen(InventoryOpenEvent event) {
 
         final Arena current = Manager.getInstance().getArena(player.getUniqueId());
+        pagination.getItems().clear();
 
         Icon randomIcon = new Icon(Material.ENDER_PEARL).setName(configfile.getRandom());
         randomIcon.onClick(e -> {
             Random random = new Random();
             int index = random.nextInt(biomes.size());
-            Biome biome = biomes.get(index).getItem();
+            Biome biome = biomes.get(index);
 
             if (current != null) {
                 player.sendMessage(configfile.getAlreadyInArena());
@@ -52,31 +52,24 @@ public class BiomeFindChallengeGUI extends Gui {
         });
         addItem(4, randomIcon);
 
-        if (!(pagination.getCurrentPage() == 0)) {
-            Icon icon = new Icon(Material.ARROW).setName(configfile.getBack()).onClick(e -> {
+            Icon back = new Icon(Material.ARROW).setName(configfile.getBack()).onClick(e -> {
                 this.pagination.goPreviousPage();
                 this.pagination.update();
                 open();
             });
-            addItem(0, icon);
-        }
+            addItem(0, back);
 
-        if (!(pagination.isLastPage())) {
 
-            Icon icon = new Icon(Material.ARROW).setName(configfile.getForward()).onClick(e -> {
+            Icon forward = new Icon(Material.ARROW).setName(configfile.getForward()).onClick(e -> {
                 this.pagination.goNextPage();
                 this.pagination.update();
                 open();
             });
 
-            addItem(8,icon);
-        } else {
-            addItem(8, new Icon(Material.AIR));
-        }
+            addItem(8,forward);
 
-        int i = 0;
-        for (BiomeFindStructure biome : biomes) {
-            this.pagination.addItem(new Icon(biome.getIcon()).setName(biome.getName()).onClick(e -> {
+        for (Biome biome : biomes) {
+            this.pagination.addItem(new Icon(Material.OAK_SAPLING).setName(configfile.getElementcolor() + biome.name().replaceAll("_", " ")).onClick(e -> {
                 if (current != null) {
                     player.sendMessage(configfile.getAlreadyInArena());
                     return;
@@ -85,7 +78,6 @@ public class BiomeFindChallengeGUI extends Gui {
                 Arena arena = new Arena(GameType.BIOMEFOUND, biome);
                 new SelectPrivateGUI(player, arena).open();
             }));
-            i++;
         }
         pagination.update();
     }

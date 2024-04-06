@@ -2,7 +2,6 @@ package it.marcomaraglino.challengebattle.guibuilder;
 
 import it.marcomaraglino.challengebattle.arena.Arena;
 import it.marcomaraglino.challengebattle.configfile.Configfile;
-import it.marcomaraglino.challengebattle.configfile.ItemFindStructure;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
 import it.marcomaraglino.challengebattle.manager.Manager;
 import mc.obliviate.inventory.Gui;
@@ -19,7 +18,7 @@ import java.util.Random;
 public class ItemFindChallengGUI extends Gui {
     private final PaginationManager pagination = new PaginationManager(this);
     Configfile configfile = new Configfile();
-    List<ItemFindStructure> items = configfile.getItems();
+    List<Material> items = configfile.getItems();
     public ItemFindChallengGUI(@NotNull Player player) {
         super(player, "itemfindchallengegui", "Choose the item", 6);
         this.pagination.registerPageSlotsBetween(9, 44);
@@ -35,7 +34,7 @@ public class ItemFindChallengGUI extends Gui {
         randomIcon.onClick(e -> {
             Random random = new Random();
             int index = random.nextInt(items.size());
-            Material material = items.get(index).getItem();
+            Material material = items.get(index);
 
             if (current != null) {
                 player.sendMessage(configfile.getAlreadyInArena());
@@ -43,6 +42,7 @@ public class ItemFindChallengGUI extends Gui {
             }
 
             Arena arena = new Arena(GameType.ITEMFOUND, items.get(index));
+            player.closeInventory();
 
             new SelectPrivateGUI(player, arena).open();
         });
@@ -50,30 +50,24 @@ public class ItemFindChallengGUI extends Gui {
 
 
 
-        if (!(pagination.getCurrentPage() == 0)) {
-            Icon icon = new Icon(Material.ARROW).setName(configfile.getBack()).onClick(e -> {
+            Icon back = new Icon(Material.ARROW).setName(configfile.getBack()).onClick(e -> {
                 this.pagination.goPreviousPage();
                 this.pagination.update();
                 open();
             });
-            addItem(0, icon);
-        }
+            addItem(0, back);
 
-        if (!(pagination.isLastPage())) {
 
-            Icon icon = new Icon(Material.ARROW).setName(configfile.getForward()).onClick(e -> {
+            Icon forward = new Icon(Material.ARROW).setName(configfile.getForward()).onClick(e -> {
                 this.pagination.goNextPage();
                 this.pagination.update();
                 open();
             });
 
-            addItem(8,icon);
-        } else {
-            addItem(8, new Icon(Material.AIR));
-        }
+            addItem(8,forward);
 
-        for (ItemFindStructure item : configfile.getItems()) {
-            this.pagination.addItem(new Icon(item.getIcon()).onClick(e -> {
+        for (Material item : configfile.getItems()) {
+            this.pagination.addItem(new Icon(item).onClick(e -> {
                 if (current != null) {
                     player.sendMessage(configfile.getAlreadyInArena());
                     return;

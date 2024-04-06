@@ -39,7 +39,7 @@ public class Game<T> extends BukkitRunnable {
         return gameType;
     }
 
-    public Game(Arena<T> arena, GameType gameType, T itemFind, String title) {
+    public Game(Arena<T> arena, GameType gameType, T itemFind) {
         this.itemFind = itemFind;
         this.arena = arena;
         this.time = 0;
@@ -86,10 +86,16 @@ public class Game<T> extends BukkitRunnable {
 
     @Override
     public void run() {
+        int seconds = time % 60;
+        int minutes = (time % 3600) / 60;
+        int hours = time / 3600;
 
         for (UUID uuid : arena.getPlayers()) {
             Player player = Bukkit.getPlayer(uuid);
-            player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(configfile.getTime().replaceAll("%s", String.valueOf(time))));
+            player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(configfile.getTime()
+                    .replaceAll("%s", String.valueOf(seconds))
+                    .replaceAll("%m", String.valueOf(minutes))
+                    .replaceAll("%h", String.valueOf(hours))));
         }
 
 
