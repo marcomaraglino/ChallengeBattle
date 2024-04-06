@@ -1,7 +1,9 @@
 package it.marcomaraglino.challengebattle.arena;
 
 import it.marcomaraglino.challengebattle.ChallengeBattle;
+import it.marcomaraglino.challengebattle.configfile.Configfile;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -16,11 +18,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 
 public class Game<T> extends BukkitRunnable {
-
+    private Configfile configfile = new Configfile();
     private final Arena<T> arena;
     private GameType gameType;
     private int time;
     private BossBar bossBar;
+    private String title;
     private T itemFind;
 
     public int getTime() {
@@ -39,30 +42,33 @@ public class Game<T> extends BukkitRunnable {
         return gameType;
     }
 
-    public Game(Arena<T> arena, GameType gameType, T itemFind) {
+    public Game(Arena<T> arena, GameType gameType, T itemFind, String title) {
         this.itemFind = itemFind;
         this.arena = arena;
         this.time = 0;
         this.gameType = gameType;
+        this.title = title;
     }
 
     public void start() {
         arena.setState(GameState.STARTED);
-        arena.broadcast(ChatColor.AQUA + "The game has started!");
+        arena.broadcast(configfile.getGamestarted());
 
-        //TODO: Controllare se funziona senza il toString()
         switch (gameType) {
             case ITEMFOUND:
-                bossBar = Bukkit.createBossBar("Trova oggetto: " + itemFind.toString(), BarColor.PURPLE, BarStyle.SOLID);
+                bossBar = Bukkit.createBossBar(configfile.getFindobject().replaceAll("%s", title), BarColor.PURPLE, BarStyle.SOLID);
                 break;
             case STRUCTUREFOUND:
-                bossBar = Bukkit.createBossBar("Trova bioma: " + itemFind.toString(), BarColor.PURPLE, BarStyle.SOLID);
+                bossBar = Bukkit.createBossBar(configfile.getStructurefind().replaceAll("%s", title), BarColor.PURPLE, BarStyle.SOLID);
                 break;
             case BIOMEFOUND:
-                bossBar = Bukkit.createBossBar("Trova: " + itemFind, BarColor.PURPLE, BarStyle.SOLID);
+                bossBar = Bukkit.createBossBar(configfile.getBiomefind().replaceAll("%s", title), BarColor.PURPLE, BarStyle.SOLID);
                 break;
             case MOBKILL:
-                bossBar = Bukkit.createBossBar("Uccidi: " + itemFind, BarColor.PURPLE, BarStyle.SOLID);
+                bossBar = Bukkit.createBossBar(configfile.getKillmob().replaceAll("%s", title), BarColor.PURPLE, BarStyle.SOLID);
+                break;
+            case DIMENSIONBATTLE:
+                bossBar = Bukkit.createBossBar(configfile.getDimensionbattle().replaceAll("%s", title), BarColor.PURPLE, BarStyle.SOLID);
                 break;
         }
 
@@ -86,11 +92,18 @@ public class Game<T> extends BukkitRunnable {
 
         for (UUID uuid : arena.getPlayers()) {
             Player player = Bukkit.getPlayer(uuid);
-            player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Tempo: " + time + "s"));
+            player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(configfile.getTime().replaceAll("%s", String.valueOf(time))));
         }
 
 
         time++;
+
+        /*if (getTime() > 260) {
+            cancel();
+            arena.reset();
+        }
+
+         */
     }
 
 }

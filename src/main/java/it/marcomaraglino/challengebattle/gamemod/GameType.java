@@ -4,6 +4,7 @@ public enum GameType {
     ITEMFOUND,
     BIOMEFOUND,
     MOBKILL,
-    STRUCTUREFOUND;
+    STRUCTUREFOUND,
+    DIMENSIONBATTLE;
 }
 

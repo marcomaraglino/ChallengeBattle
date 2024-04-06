@@ -1,0 +1,172 @@
+requiredplayers: 2
+spawnpoint:
+  world: "world"
+  x: 0.0
+  y: 10.0
+  z: 0.0
+arenaprefix: "§a[Arena §c%s§a]"
+maxnumberarenas: 5
+
+win_sound: "ENTITY_PLAYER_LEVELUP"
+countdown_sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
+start_sound: "ENTITY_ENDER_DRAGON_AMBIENT"
+
+messages:
+  nopermission: "§cYou do not have permission to execute this command."
+  alreadyInArena: "§cYou are already in an arena!"
+  notAPlayer: "Only a player may execute this command!"
+  invalidInteger: "That is not a valid integer."
+  invalidArena: "That is not a valid arena."
+  arenaStarted: "You may not join this arena as it has already started."
+  joinedArena: "§aYou have joined arena %s."
+  arenaCreated: "§aArena created!"
+  leftArena: "§cYou have left arena %s."
+  notInArena: "§cYou are not currently in an arena."
+  inArena: "§aYou are in arena %s."
+  invalidSubcommand: "§cInvalid subcommand."
+  cannotLeaveStartedArena: "§cYou may not leave this arena as it has already started."
+  mustIncludeArenaID: "§cYou must include an arena ID."
+  invitedplayer: "§aYou have invited %s to join in your arena"
+  invitedtoarena: "§aYou have been invited to join %s's arena"
+  mustincludeplayer: "§cYou must include a player to invite"
+  cannotinviteself: "§cYou cannot invite yourself"
+  playernotonline: "§cPlayer is not online"
+  clicktojoin: "§aClick to join"
+  gamestarted: "§aGame started"
+  findobject: "§aFind the %s"
+  killmob: "§aKill the %s"
+  dimensionbattle: "§aEnter the %s"
+  structurefind: "§aFind the %s"
+  biomefind: "§aFind the %s"
+  time: "§aTime: %ss"
+  wonthegame: "You won the game!"
+  maxnumberofarenas: "§cYou have reached the maximum number of arenas"
+  gamewillstart: "§aGame will start in %s seconds"
+  blockedcommand: "§cYou cannot use this command in the arena"
+
+guititles:
+  createarenatitle: "Create Arena"
+  roomsguititle: "Rooms"
+  itemfindtitle: "Item Find Challenge"
+  mobkilltitle: "Mob Kill Challenge"
+  dimensionbattletitle: "Dimension Battle"
+  structurefindtitle: "Structure Find Challenge"
+  biomefindtitle: "Biome Find Challenge"
+guielements:
+  back: "Back"
+  forward: "Forward"
+  private: "Private"
+  public: "Public"
+  random: "Pick a random"
+
+selectroom:
+  createarena:
+    title: "Create Arena"
+    item: "NETHER_STAR"
+  arenas:
+    arena: "§aArena %s"
+    mode: "§aMode: %s"
+    object: "§aItem / Mob / Biome / Scruture: %s"
+
+itemfound: "Item Find Battle"
+biomefound: "Biome Find Battle"
+mobkill: "Mob kill battle"
+structurefound: "Structure Find Battle"
+dimensionbattle: "Dimension Battle"
+
+createArena:
+    ITEMFOUND:
+      title: "Item Found"
+      item: "GREEN_WOOL"
+      slot: 0
+    BIOMEFOUND:
+      title: "Biome Found"
+      item: "GREEN_WOOL"
+      slot: 1
+    MOBKILL:
+      title: "Mob Kill"
+      item: "GREEN_WOOL"
+      slot: 2
+    STRUCTUREFOUND:
+      title: "Structure Found"
+      item: "DIAMOND"
+      slot: 3
+    DIMENSIONBATTLE:
+      title: "Dimension Battle"
+      item: "NETHERITE_INGOT"
+      slot: 4
+biomes:
+  DESERT:
+    biome: "DESERT"
+    name: "Desert"
+    icon: "SAND"
+  TAIGA:
+    biome: "TAIGA"
+    name: "Taiga"
+    icon: "SPRUCE_LOG"
+  SAVANNA:
+    biome: "SAVANNA"
+    name: "Savanna"
+    icon: "GRASS_BLOCK"
+
+items:
+  DIRT:
+    item: "DIRT"
+    name: "Dirt"
+    icon: "DIRT"
+  DIAMOND:
+    item: "DIAMOND"
+    name: "Diamond"
+    icon: "DIAMOND"
+  GOLD_INGOT:
+    item: "GOLD_INGOT"
+    name: "Gold Ingot"
+    icon: "GOLD_INGOT"
+mobs:
+  COW:
+    mob: "COW"
+    name: "Cow"
+    icon: "COW_SPAWN_EGG"
+  PIG:
+    mob: "PIG"
+    name: "Pig"
+    icon: "PIG_SPAWN_EGG"
+  SHEEP:
+    mob: "SHEEP"
+    name: "Sheep"
+    icon: "SHEEP_SPAWN_EGG"
+  CHICKEN:
+    mob: "CHICKEN"
+    name: "Chicken"
+    icon: "CHICKEN_SPAWN_EGG"
+  WOLF:
+    mob: "WOLF"
+    name: "Wolf"
+    icon: "WOLF_SPAWN_EGG"
+dimensions:
+  NETHER:
+    dimension: "NETHER"
+    name: "Nether"
+    icon: "NETHERITE_INGOT"
+  END:
+    dimension: "THE_END"
+    name: "End"
+    icon: "END_STONE"
+structures:
+  VILLAGE:
+    structure: "VILLAGE_DESERT"
+    name: "Village desert"
+    icon: "VILLAGER_SPAWN_EGG"
+  TEMPLE:
+    structure: "PILLAGER_OUTPOST"
+    name: "PILLAGER OUTPOST"
+    icon: "GOLD_BLOCK"
+  MANSION:
+    structure: "MANSION"
+    name: "Mansion"
+    icon: "DARK_OAK_PLANKS"
+blockedcommands:
+  - "/tp"
+  - "/spawn"
+  - "/tpa"
+

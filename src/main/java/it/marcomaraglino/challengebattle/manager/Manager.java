@@ -1,17 +1,24 @@
 package it.marcomaraglino.challengebattle.manager;
 
+import com.google.gson.Gson;
 import it.marcomaraglino.challengebattle.arena.Arena;
+import it.marcomaraglino.challengebattle.configfile.Configfile;
+import it.marcomaraglino.challengebattle.playerprofile.PlayerProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class Manager {
-    public final static Location SPAWN_POINT = new Location(Bukkit.getWorld("world"), 0.0, 10.0, 0.0);
-
-
+    private final Configfile configfile = new Configfile();
+    public static Location SPAWN_POINT;
     private static Manager manager;
+
+    private HashMap<UUID, PlayerProfile> playerProfiles = new HashMap<>();
 
     public static Manager getInstance() {
         if (manager == null) {
@@ -60,5 +67,18 @@ public class Manager {
 
     private Manager() {
         this.arenas = new ArrayList<>();
+        SPAWN_POINT = new Location(Bukkit.getWorld(configfile.getSpawnworld()), configfile.getSpawnx(), configfile.getSpawny(), configfile.getSpawnz());
+    }
+
+    public HashMap<UUID, PlayerProfile> getPlayerProfiles() {
+        return playerProfiles;
+    }
+
+    public void addPlayerProfile(UUID uuid, PlayerProfile playerProfile) {
+        playerProfiles.put(uuid, playerProfile);
+    }
+
+    public void setPlayerProfiles(HashMap<UUID, PlayerProfile> playerProfiles) {
+        this.playerProfiles = playerProfiles;
     }
 }

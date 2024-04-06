@@ -1,5 +1,7 @@
 package it.marcomaraglino.challengebattle.arena;
 
+import it.marcomaraglino.challengebattle.configfile.Configfile;
+import it.marcomaraglino.challengebattle.configfile.GameConfigStructure;
 import it.marcomaraglino.challengebattle.game.Countdown;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
 import it.marcomaraglino.challengebattle.manager.Manager;
@@ -7,8 +9,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.UUID;
 
 
@@ -24,9 +28,17 @@ public class Arena<T> {
 
     private final int requiredPlayers;
     private final String prefix;
+    private boolean privateArena;
+    private GameConfigStructure<T> structure;
 
-    public Arena(GameType gameType, T itemFind) {
+    public Arena(GameType gameType, GameConfigStructure<T> structure) {
+        Configfile configfile = new Configfile();
+
+        privateArena = true;
+        this.structure = structure;
+
         int arena_id = 1;
+
         ArrayList<Arena> arenaList = Manager.getInstance().getArenaList();
         for (Arena arena : arenaList) {
             if (arena.getId() != arena_id) {
@@ -50,17 +62,26 @@ public class Arena<T> {
         // Initialise the arena's game state as waiting - what it will be when
         // the arena is created.
         this.state = GameState.WAITING;
-        this.location = new Location(world, 00.0, world.getHighestBlockAt(00, 00).getY(),
-                00.0);
+        Random random = new Random();
+        float x = random.nextFloat(10000);
+        float z = random.nextFloat(10000);
+        this.location = new Location(world, x, world.getHighestBlockAt((int) x, (int) z).getY(),
+                z);
 
         this.countdown = new Countdown(this);
-        this.game = new Game(this, gameType, itemFind);
+        this.game = new Game(this, gameType, structure.getItem(), structure.getName());
 
         // The players required for the countdown to start.
-        this.requiredPlayers = 1;
-        this.prefix = ChatColor.GRAY + "[" + ChatColor.GREEN + "Arena " + id + ChatColor.GRAY + "] " + ChatColor.RESET;
+        this.requiredPlayers = configfile.getRequiredplayers();
+        this.prefix = configfile.getArenaprefix().replaceAll("%s", String.valueOf(id));
 
         // Add the arena to the arena list in the manager class.
+        if (Manager.getInstance().getArenaList().size() >= configfile.getMaxnumberarenas()) {
+            return;
+        }
+    }
+
+    public void addArena() {
         Manager.getInstance().addArena(this);
     }
 
@@ -68,7 +89,10 @@ public class Arena<T> {
         // Clear all variables that should not continue their values into the
         // next round played in this arena.
 
-
+        this.players.forEach(uuid -> {
+            Player player = Bukkit.getPlayer(uuid);
+            player.teleport(Manager.SPAWN_POINT);
+        });
         this.players.clear();
 
         this.state = GameState.WAITING;
@@ -85,13 +109,27 @@ public class Arena<T> {
         World world = Bukkit.createWorld(new WorldCreator("arena-" + this.id));
         world.setAutoSave(false);
     }
+    public void teleportPlayersToSpawn() {
+        for (int i = 0; i < players.size(); i++) {
+            Bukkit.getPlayer(players.get(i)).teleport(Manager.SPAWN_POINT);
+        }
+    }
 
     public void broadcast(String message) {
 
-        Title title = Title.title(Component.text(prefix), Component.text(message));
         for (int i = 0; i < players.size(); i++) {
+            Title title = Title.title(Component.text(prefix), Component.text(message));
             Bukkit.getPlayer(players.get(i)).showTitle(title);
         }
+
+    }
+
+    public void broadcast(String message, Player player) {
+
+        Title title = Title.title(Component.text(prefix), Component.text(message));
+        player.showTitle(title);
+
+
     }
 
     public void addPlayer(UUID uuid) {
@@ -106,8 +144,10 @@ public class Arena<T> {
 
     public void removePlayer(UUID uuid) {
         players.remove(uuid);
+        clearInventory(Bukkit.getPlayer(uuid));
+        clearPotionEffects(Bukkit.getPlayer(uuid));
 
-        if (state == GameState.WAITING) {
+        if ((state == GameState.WAITING || state == GameState.COUNTDOWN) && players.isEmpty()) {
             reset();
         }
 
@@ -120,8 +160,7 @@ public class Arena<T> {
             // Get the last player.
             Player winner = Bukkit.getPlayer(players.get(0));
 
-            Bukkit.broadcastMessage(
-                    ChatColor.GREEN + "" + ChatColor.BOLD + winner.getName() + " won arena " + id + "!");
+            winner.sendMessage("You won the game");
 
             removePlayer(winner.getUniqueId());
 
@@ -176,4 +215,25 @@ public class Arena<T> {
         return prefix;
     }
 
+    public boolean isPrivateArena() {
+        return privateArena;
+    }
+
+    public void setPrivateArena(boolean privateArena) {
+        this.privateArena = privateArena;
+    }
+    public static void clearInventory(Player player) {
+        player.getInventory().clear();
+        player.getEquipment().clear();
+    }
+
+    public static void clearPotionEffects(Player player) {
+        for (PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
+    }
+
+    public GameConfigStructure<T> getStructure() {
+        return structure;
+    }
 }

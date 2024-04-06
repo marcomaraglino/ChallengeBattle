@@ -3,10 +3,18 @@ package it.marcomaraglino.challengebattle.game;
 import it.marcomaraglino.challengebattle.ChallengeBattle;
 import it.marcomaraglino.challengebattle.arena.Arena;
 import it.marcomaraglino.challengebattle.arena.GameState;
+import it.marcomaraglino.challengebattle.configfile.Configfile;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.UUID;
+
 public class Countdown extends BukkitRunnable {
+    Configfile configfile = new Configfile();
 
     private int time;
 
@@ -60,12 +68,18 @@ public class Countdown extends BukkitRunnable {
 // message.
 
             if (time != 1) {
-
-                arena.broadcast(ChatColor.AQUA + "Game will start in " + time + " seconds.");
+                for (int i = 0 ; i < arena.getPlayers().size() ; i++) {
+                    Player player = Bukkit.getPlayer((UUID) arena.getPlayers().get(i));
+                    player.playSound(player.getLocation(), configfile.getCountdown_sound(), 1f, 1f);
+                }
+                arena.broadcast(configfile.getGamewillstart().replaceAll("%s", String.valueOf(time)));
 
             } else {
-
-                arena.broadcast(ChatColor.AQUA + "Game will start in " + time + " second.");
+                for (int i = 0 ; i < arena.getPlayers().size() ; i++) {
+                    Player player = Bukkit.getPlayer((UUID) arena.getPlayers().get(i));
+                    player.playSound(player.getLocation(), configfile.getCountdown_sound(), 1f, 1f);
+                }
+                arena.broadcast(configfile.getGamewillstart().replaceAll("%s", String.valueOf(time)));
 
             }
 

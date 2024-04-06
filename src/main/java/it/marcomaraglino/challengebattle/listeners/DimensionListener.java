@@ -5,19 +5,17 @@ import it.marcomaraglino.challengebattle.arena.GameState;
 import it.marcomaraglino.challengebattle.configfile.Configfile;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
 import it.marcomaraglino.challengebattle.manager.Manager;
-import org.bukkit.block.Biome;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 
-public class BiomeFindListener implements Listener {
+public class DimensionListener implements Listener {
     Configfile configfile = new Configfile();
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-
+    public void onDimensionChange(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
-        Biome currentBiome = player.getLocation().getBlock().getBiome();
 
         Arena arena = Manager.getInstance().getArena(player.getUniqueId());
 
@@ -29,21 +27,21 @@ public class BiomeFindListener implements Listener {
             return;
         }
 
-        if (arena.getGame().getGameType() != GameType.BIOMEFOUND) {
+        if (arena.getGame().getGameType() != GameType.DIMENSIONBATTLE) {
             return;
         }
 
+        World.Environment environment = player.getPlayer().getWorld().getEnvironment();
 
-        if (currentBiome.equals(arena.getGame().getItemFind())) {
-
+        if (environment.equals(arena.getGame().getItemFind())) {
             for (int i = 0; i < arena.getPlayers().size(); i++){
-                Manager.getInstance().getPlayerProfiles().get(arena.getPlayers().get(i)).addBiomeFindPlayed();
+                Manager.getInstance().getPlayerProfiles().get(arena.getPlayers().get(i)).addDimensionChangePlayed();
             }
 
-            Manager.getInstance().getPlayerProfiles().get(player.getUniqueId()).addBiomeFindVictory();
+            Manager.getInstance().getPlayerProfiles().get(player.getUniqueId()).addDimensionChangeVictory();
+
             arena.teleportPlayersToSpawn();
             arena.broadcast(configfile.getWonthegame(), player);
-
             player.playSound(player.getLocation(), configfile.getWin_sound(), 1f, 1f);
 
             arena.removePlayer(player.getUniqueId());

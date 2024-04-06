@@ -2,6 +2,7 @@ package it.marcomaraglino.challengebattle.listeners;
 
 import it.marcomaraglino.challengebattle.arena.Arena;
 import it.marcomaraglino.challengebattle.arena.GameState;
+import it.marcomaraglino.challengebattle.configfile.Configfile;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
 import it.marcomaraglino.challengebattle.manager.Manager;
 import org.bukkit.entity.*;
@@ -10,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class MobKillListener implements Listener {
+    Configfile configfile = new Configfile();
     @EventHandler
     public void onMobDeath(EntityDeathEvent event) {
 
@@ -42,8 +44,17 @@ public class MobKillListener implements Listener {
         EntityType entityType = entity.getType();
 
         if (entityType == arena.getGame().getItemFind()) {
-            killer.teleport(Manager.SPAWN_POINT);
-            arena.broadcast("Hai vinto il gioco!");
+            for (int i = 0; i < arena.getPlayers().size(); i++){
+                Manager.getInstance().getPlayerProfiles().get(arena.getPlayers().get(i)).addMobKillPlayed();
+            }
+
+            Manager.getInstance().getPlayerProfiles().get(killer.getUniqueId()).addMobKillVictory();
+
+            arena.teleportPlayersToSpawn();
+            arena.broadcast(configfile.getWonthegame(), killer);
+
+            killer.playSound(killer.getLocation(), configfile.getWin_sound(), 1f, 1f);
+
             arena.removePlayer(killer.getUniqueId());
             arena.reset();
         }

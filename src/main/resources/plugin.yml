@@ -2,6 +2,9 @@ name: ChallengeBattle
 version: '${project.version}'
 main: it.marcomaraglino.challengebattle.ChallengeBattle
 api-version: '1.20'
+softdepend: [PlaceholderAPI]
 commands:
   arena:
-    description: The command that allows a player to join or leave an arena as well as checking the id of an arena.
+    description: The command that allows a player to join or leave an arena as well as checking the id of an arena"
+    usage: /arena <join|leave|id|create>
+    aliases: [cb, challengebattle]
