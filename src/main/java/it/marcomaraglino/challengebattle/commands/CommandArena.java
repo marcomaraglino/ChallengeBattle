@@ -7,17 +7,13 @@ import it.marcomaraglino.challengebattle.configfile.Configfile;
 import it.marcomaraglino.challengebattle.guibuilder.ArenaCreateGUI;
 import it.marcomaraglino.challengebattle.guibuilder.ChallengeRoomGui;
 import it.marcomaraglino.challengebattle.manager.Manager;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.generator.structure.StructureType;
 
 public class CommandArena implements CommandExecutor {
     Configfile configfile = new Configfile();

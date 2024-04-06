@@ -3,16 +3,13 @@ package it.marcomaraglino.challengebattle.arena;
 import it.marcomaraglino.challengebattle.ChallengeBattle;
 import it.marcomaraglino.challengebattle.configfile.Configfile;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
-import org.bukkit.generator.structure.StructureType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;

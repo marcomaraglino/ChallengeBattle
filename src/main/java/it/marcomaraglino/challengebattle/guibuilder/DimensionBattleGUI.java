@@ -1,7 +1,6 @@
 package it.marcomaraglino.challengebattle.guibuilder;
 
 import it.marcomaraglino.challengebattle.arena.Arena;
-import it.marcomaraglino.challengebattle.configfile.BiomeFindStructure;
 import it.marcomaraglino.challengebattle.configfile.Configfile;
 import it.marcomaraglino.challengebattle.configfile.DimensionBattleStructure;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
@@ -11,7 +10,6 @@ import mc.obliviate.inventory.Icon;
 import mc.obliviate.inventory.pagination.PaginationManager;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.jetbrains.annotations.NotNull;

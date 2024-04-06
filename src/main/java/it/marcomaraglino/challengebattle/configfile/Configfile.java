@@ -6,10 +6,6 @@ import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Mob;
-import org.bukkit.entity.Player;
-import org.bukkit.generator.structure.Structure;
-import org.bukkit.generator.structure.StructureType;
 
 import java.util.ArrayList;
 import java.util.List;

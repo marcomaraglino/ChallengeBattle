@@ -1,19 +1,16 @@
 package it.marcomaraglino.challengebattle.listeners;
 
+import it.marcomaraglino.challengebattle.arena.Arena;
 import it.marcomaraglino.challengebattle.arena.GameState;
 import it.marcomaraglino.challengebattle.configfile.Configfile;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
 import it.marcomaraglino.challengebattle.manager.Manager;
-import it.marcomaraglino.challengebattle.arena.Arena;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.UUID;
 
 public class PickItemListener implements Listener {
 

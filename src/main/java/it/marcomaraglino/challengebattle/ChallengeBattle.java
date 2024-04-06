@@ -10,13 +10,14 @@ import it.marcomaraglino.challengebattle.playerprofile.PlayerProfile;
 import mc.obliviate.inventory.InventoryAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.generator.structure.Structure;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public final class ChallengeBattle extends JavaPlugin {
     private static ChallengeBattle instance;

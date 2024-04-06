@@ -4,10 +4,8 @@ import it.marcomaraglino.challengebattle.ChallengeBattle;
 import it.marcomaraglino.challengebattle.arena.Arena;
 import it.marcomaraglino.challengebattle.arena.GameState;
 import it.marcomaraglino.challengebattle.configfile.Configfile;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 

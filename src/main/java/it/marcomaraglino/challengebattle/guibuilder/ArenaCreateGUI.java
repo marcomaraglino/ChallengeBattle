@@ -2,7 +2,6 @@ package it.marcomaraglino.challengebattle.guibuilder;
 
 import it.marcomaraglino.challengebattle.configfile.Configfile;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
-import it.marcomaraglino.challengebattle.manager.Manager;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import org.bukkit.Material;
