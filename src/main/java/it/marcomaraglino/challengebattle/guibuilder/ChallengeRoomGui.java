@@ -2,6 +2,7 @@ package it.marcomaraglino.challengebattle.guibuilder;
 
 import it.marcomaraglino.challengebattle.arena.Arena;
 import it.marcomaraglino.challengebattle.configfile.Configfile;
+import it.marcomaraglino.challengebattle.configfile.DimensionBattleStructure;
 import it.marcomaraglino.challengebattle.manager.Manager;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
@@ -35,7 +36,6 @@ public class ChallengeRoomGui extends Gui {
                 .filter(arena -> !arena.isPrivateArena())
                 .collect(Collectors.toList());
 
-
         for (int i = 0; i < arenas.size(); i++) {
             Icon icon;
             switch (arenas.get(i).getState()) {
@@ -65,11 +65,14 @@ public class ChallengeRoomGui extends Gui {
                     icon.appendLore(configfile.getRoomguiarenamode().replaceAll("%s", configfile.getBiomefound()));
                     break;
                 case DIMENSIONBATTLE:
-                    icon.appendLore(configfile.getRoomguiarenamode().replaceAll("%s", configfile.getDimensionbattle()));
+                    icon.appendLore(configfile.getRoomguiarenamode().replaceAll("%s", configfile.getDimensionfound()));
                     break;
             }
             if (arenas.get(i).getObject() instanceof Structure structure) {
                 icon.appendLore(configfile.getRoomguiarenaobject().replaceAll("%s", structure.getKey().asString().replaceAll("minecraft:", "")));
+            }
+            else if (arenas.get(i).getObject() instanceof DimensionBattleStructure dimensionBattleStructure) {
+                icon.appendLore(configfile.getRoomguiarenaobject().replaceAll("%s", dimensionBattleStructure.getItem().toString()));
             } else {
                 icon.appendLore(configfile.getRoomguiarenaobject().replaceAll("%s", arenas.get(i).getObject().toString()));
             }

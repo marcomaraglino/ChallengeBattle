@@ -2,14 +2,19 @@ package it.marcomaraglino.challengebattle.arena;
 
 import it.marcomaraglino.challengebattle.ChallengeBattle;
 import it.marcomaraglino.challengebattle.configfile.Configfile;
+import it.marcomaraglino.challengebattle.configfile.DimensionBattleStructure;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.generator.structure.Structure;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
@@ -44,7 +49,6 @@ public class Game<T> extends BukkitRunnable {
         this.arena = arena;
         this.time = 0;
         this.gameType = gameType;
-        this.title = title;
     }
 
     public void start() {
@@ -53,18 +57,30 @@ public class Game<T> extends BukkitRunnable {
 
         switch (gameType) {
             case ITEMFOUND:
+                title = ((org.bukkit.Material) itemFind).name();
                 bossBar = Bukkit.createBossBar(configfile.getFindobject().replaceAll("%s", title), BarColor.PURPLE, BarStyle.SOLID);
                 break;
             case STRUCTUREFOUND:
+                Structure structure = (Structure) itemFind;
+                title = configfile.getElementcolor() + structure.getKey().asString()
+                        .replaceAll("minecraft:", "")
+                        .replaceAll("_", " ");
                 bossBar = Bukkit.createBossBar(configfile.getStructurefind().replaceAll("%s", title), BarColor.PURPLE, BarStyle.SOLID);
                 break;
             case BIOMEFOUND:
+                Biome biome = (Biome) itemFind;
+                title = configfile.getElementcolor() + biome.name().replaceAll("_", " ");
                 bossBar = Bukkit.createBossBar(configfile.getBiomefind().replaceAll("%s", title), BarColor.PURPLE, BarStyle.SOLID);
                 break;
             case MOBKILL:
+                EntityType mob = (EntityType) itemFind;
+                title = configfile.getElementcolor() + mob.getName().toUpperCase().replaceAll("_", "");
                 bossBar = Bukkit.createBossBar(configfile.getKillmob().replaceAll("%s", title), BarColor.PURPLE, BarStyle.SOLID);
                 break;
             case DIMENSIONBATTLE:
+                DimensionBattleStructure dimensionBattleStructure = (DimensionBattleStructure) itemFind;
+                World.Environment environment = dimensionBattleStructure.getItem();
+                title = environment.name();
                 bossBar = Bukkit.createBossBar(configfile.getDimensionbattle().replaceAll("%s", title), BarColor.PURPLE, BarStyle.SOLID);
                 break;
         }

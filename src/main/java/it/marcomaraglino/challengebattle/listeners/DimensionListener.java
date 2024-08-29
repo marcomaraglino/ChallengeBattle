@@ -3,6 +3,7 @@ package it.marcomaraglino.challengebattle.listeners;
 import it.marcomaraglino.challengebattle.arena.Arena;
 import it.marcomaraglino.challengebattle.arena.GameState;
 import it.marcomaraglino.challengebattle.configfile.Configfile;
+import it.marcomaraglino.challengebattle.configfile.DimensionBattleStructure;
 import it.marcomaraglino.challengebattle.gamemod.GameType;
 import it.marcomaraglino.challengebattle.manager.Manager;
 import org.bukkit.World;
@@ -31,9 +32,11 @@ public class DimensionListener implements Listener {
             return;
         }
 
-        World.Environment environment = player.getPlayer().getWorld().getEnvironment();
+        World.Environment player_environment = player.getPlayer().getWorld().getEnvironment();
+        DimensionBattleStructure dimensionBattleStructure = (DimensionBattleStructure) arena.getGame().getItemFind();
+        World.Environment game_environment = dimensionBattleStructure.getItem();
 
-        if (environment.equals(arena.getGame().getItemFind())) {
+        if (game_environment.equals(player_environment)) {
             for (int i = 0; i < arena.getPlayers().size(); i++){
                 Manager.getInstance().getPlayerProfiles().get(arena.getPlayers().get(i)).addDimensionChangePlayed();
             }
